@@ -20,10 +20,10 @@ banner() {
   [ -z "$SCUF_ENV" ] && b1="" || b1="     \u001b[38;5;240mSite: \e[0;31m$SITE_NAME\e[0m"
   [ -z "$SCUF_ENV" ] && b2="" || b2="   \u001b[38;5;240mDomain: \e[0;35m$SITE_DOMAIN\e[0m"
   [ -z "$SCUF_ENV" ] && b3="" || b3="      \u001b[38;5;240mEnv: \e[0;32m$SCUF_ENV\e[0m"
-  echo -e "┏━━━┳━━┳━━━┳━━━┓  $b0"
-  echo -e "┣━━┃┃┏┓┣━━┃┣━━┃┃  $b1"
-  echo -e "┃┃━━┫┏┓┃┃━━┫┃━━┫  $b2"
-  echo -e "┗━━━┻┛┗┻━━━┻━━━┛  $b3\e[0m"
+  echo -e "┏━━┳━┳┳┳━━┓  $b0"
+  echo -e "┃━━┫┏┫┃┃━┳┛  $b1"
+  echo -e "┣━━┃┗┫┃┃┏┛   $b2"
+  echo -e "┗━━┻━┻━┻┛    $b3\e[0m"
 }
 
 usage() {
