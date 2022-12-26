@@ -1,0 +1,24 @@
+storage: /verdaccio/storage
+plugins: /verdaccio/plugins
+
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+
+auth:
+  htpasswd:
+    file: ./htpasswd
+
+web:
+  enable: true
+  title: Scuf Local NPM Cache
+  darkMode: true
+
+packages:
+  '@*/*':
+    access: $all
+    publish: $authenticated
+    proxy: npmjs
+  '**':
+    access: $all
+    proxy: npmjs

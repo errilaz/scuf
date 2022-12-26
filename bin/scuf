@@ -1,0 +1,77 @@
+#!/bin/bash
+
+export SCUF=$(readlink -f $BASH_SOURCE)
+export SCUF_ROOT=$(realpath "$(dirname $SCUF)/..")
+export SCUF_WS=$PWD
+
+source "$SCUF_ROOT/bin/functions.sh"
+
+# Parse options
+
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    -h|--help) banner; usage; exit 0 ;;
+    -w|--workspace) export SCUF_WS=$(realpath "$2"); shift ;;
+    init|exec|compose|watch|remote|cache) cmd=$1; shift; break ;;
+    *) echo "Unknown parameter: $1"; usage; exit 1 ;;
+  esac
+  shift
+done
+
+# Configuration vars
+
+base=$SCUF_WS/scuf.toml
+dev=$SCUF_WS/scuf.dev.toml
+prod=$SCUF_WS/scuf.prod.toml
+live=$SCUF_WS/scuf.live.toml
+secret=$SCUF_WS/scuf.secret.toml
+
+compose_args=()
+
+# Determine operating environment ('dev' vs 'live')
+
+if [ -f "$live" ]; then
+  export SCUF_ENV=live
+  [ -f "$base" ] && export-toml "$base"
+  export-toml "$live"
+elif [[ -f "$base" || -f "$dev" ]]; then
+  export SCUF_ENV=dev
+  [ -f "$base" ] && export-toml "$base"
+  if [ -n "$SCUF_COMPOSE" ]; then
+    compose_args+=("-f" "$SCUF_COMPOSE")
+    export SCUF_COMPOSE=""
+  fi
+  [ -f "$dev" ] && export-toml "$dev"
+  if [ -n "$SCUF_COMPOSE" ]; then
+    compose_args+=("-f" "$SCUF_COMPOSE")
+  fi
+fi
+
+# Execute script
+
+case $cmd in
+  init)     banner; $SCUF_ROOT/scripts/init.sh "$@" ;;
+  exec)     exec bash -c "$@" ;;
+  watch)    $SCUF compose logs -f "$@" ;;
+  remote)   remote "$@" ;;
+  "")       banner; usage; exit 0 ;;
+  
+  compose)
+    banner
+    [ -z "$SCUF_ENV" ] && echo "Error: no workspace found." && exit 1
+    [ -z "$compose_args" ] && echo "Error: no compose files found." && exit 1
+    docker-compose "${compose_args[@]}" -p "$SITE_PROJECT" "$@"
+  ;;
+
+  cache)
+    cmd=$1; shift
+    compose=$SCUF_ROOT/cache/cache.compose
+    case $cmd in
+      "" | "help" | "-h" | "--help") $SCUF help ;;
+      start)    docker-compose -f "$compose" -p "scuf_cache" up -d ;;
+      stop)     docker-compose -f "$compose" -p "scuf_cache" down ;;
+      restart)  docker-compose -f "$compose" -p "scuf_cache" restart registry ;;
+      *)        echo "Unknown command: cache $cmd"; usage; exit 1 ;;
+    esac
+  ;;
+esac

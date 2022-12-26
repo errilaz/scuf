@@ -1,0 +1,20 @@
+{
+  "name": "scuf",
+  "version": "0.0.1",
+  "description": "Scuf Build Tools",
+  "license": "MIT",
+  "author": {
+    "name": "errilaz",
+    "url": "http://github.com/errilaz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/errilaz/scuf.git"
+  },
+  "bin": {
+    "scuf": "./bin/scuf"
+  },
+  "dependencies": {
+    "fast-toml": "^0.5.4"
+  }
+}

@@ -1,0 +1,13 @@
+lockfileVersion: 5.4
+
+specifiers:
+  fast-toml: ^0.5.4
+
+dependencies:
+  fast-toml: 0.5.4
+
+packages:
+
+  /fast-toml/0.5.4:
+    resolution: {integrity: sha512-nUX94P84wE3gcem12g4FAH3xV7BmcCoV8FXcFVV+NIQAOwRJnyqVKhdGd9DqI4CunW+wOZhVBGKI6Jut/OlLTw==}
+    dev: false

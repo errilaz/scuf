@@ -1,0 +1,17 @@
+version: "3.6"
+
+services:
+  # NPM Cache (Verdaccio)
+  registry:
+    image: verdaccio/verdaccio:5
+    container_name: registry
+    restart: always
+    volumes:
+      - ./conf:/verdaccio/conf
+      - registry_storage:/verdaccio/storage
+    ports:
+      - "4873:4873"
+    environment:
+      - VERDACCIO_USER_UID=1000
+volumes:
+  registry_storage:
