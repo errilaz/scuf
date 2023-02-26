@@ -15,6 +15,14 @@ mirror() {
     "$1" "$PUSH_SSH:$2" "${@:3}"
 }
 
+find-up() {
+  path=$(pwd)
+  while [[ "$path" != "" && ! -e "$path/$1" ]]; do
+    path=${path%/*}
+  done
+  echo "$path"
+}
+
 banner() {
   [ -z "$SCUF_ENV" ] && b0="" || b0="\u001b[38;5;240mWorkspace: \e[0;32m$SCUF_WS\e[0m"
   [ -z "$SCUF_ENV" ] && b1="" || b1="     \u001b[38;5;240mSite: \e[0;31m$SITE_NAME\e[0m"

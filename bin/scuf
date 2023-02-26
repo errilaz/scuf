@@ -2,9 +2,8 @@
 
 export SCUF=$(readlink -f $BASH_SOURCE)
 export SCUF_ROOT=$(realpath "$(dirname $SCUF)/..")
-export SCUF_WS=$PWD
-
 source "$SCUF_ROOT/bin/functions.sh"
+export SCUF_WS=$(find-up "scuf.toml")
 
 # Parse options
 
