@@ -5,6 +5,8 @@ export SCUF_ROOT=$(realpath "$(dirname $SCUF)/..")
 source "$SCUF_ROOT/bin/functions.sh"
 export SCUF_WS=$(find-up "scuf.toml")
 
+cd "$SCUF_WS"
+
 # Parse options
 
 while [[ "$#" -gt 0 ]]; do
